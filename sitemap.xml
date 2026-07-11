@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://sztukateria.arkady.co/</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://sztukateria.arkady.co/assets/img/sztukateria-lodz-rozeta-gipsowa-hero-1600.jpg</image:loc>
+      <image:title>Sztukateria Łódź — gipsowa rozeta sufitowa, pracownia ARKADY</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://sztukateria.arkady.co/assets/img/gzymsy-sufitowe-fasety-ciagnione-lodz-1200.jpg</image:loc>
+      <image:title>Gzymsy sufitowe i fasety ciągnione — Łódź</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://sztukateria.arkady.co/assets/img/rozety-sufitowe-gipsowe-lodz-1200.jpg</image:loc>
+      <image:title>Rozety sufitowe gipsowe — Łódź</image:title>
+    </image:image>
+  </url>
+</urlset>
