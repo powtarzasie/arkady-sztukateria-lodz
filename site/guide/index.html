@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Przewodnik techniczny | ARKADY — Sztukateria Łódź</title>
+  <meta name="description" content="Jak powstała strona sztukateria-Łódź: technologie, workflow generowania assetów, warstwa SEO i instrukcja lokalnego uruchomienia.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    body { background: var(--gips); }
+    .guide-header { background: var(--oxblood); color: var(--biel); padding: 4.5rem 0 3rem; }
+    .guide-header h1 { color: var(--biel); font-size: clamp(1.9rem, 4vw, 2.9rem); }
+    .guide-header .eyebrow { color: var(--zloto-jasne); }
+    .guide-main { padding: 3rem 0 5rem; }
+    .guide-main h2 { font-size: 1.6rem; margin-top: 3rem; border-top: 1px solid var(--cien); padding-top: 2rem; }
+    .guide-main h3 { font-size: 1.15rem; margin-top: 1.8rem; }
+    .guide-main code, .guide-main pre { font-family: var(--font-mono); font-size: .85em; }
+    .guide-main code { background: var(--gips-2); padding: .1em .4em; border: 1px solid var(--cien); }
+    .guide-main pre { background: var(--oxblood-3); color: #E9DFD2; padding: 1.2rem 1.4rem; overflow-x: auto; line-height: 1.6; }
+    .guide-main pre code { background: none; border: none; padding: 0; }
+    .guide-main table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+    .guide-main th, .guide-main td { text-align: left; border: 1px solid var(--cien); padding: .55rem .8rem; vertical-align: top; }
+    .guide-main th { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; background: var(--gips-2); }
+    .back { display: inline-block; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <header class="guide-header">
+    <div class="container container-narrow">
+      <p class="eyebrow">Dokumentacja projektu</p>
+      <h1>Jak powstała ta strona</h1>
+      <p>Landing page „Sztukateria Łódź — ARKADY”: technologie, workflow assetów generatywnych, warstwa SEO i&nbsp;instrukcja uruchomienia.</p>
+    </div>
+  </header>
+
+  <main class="guide-main">
+    <div class="container container-narrow">
+      <p><a class="text-link back" href="/">← Wróć na stronę główną</a></p>
+
+      <h2>1. Koncepcja i architektura</h2>
+      <p>Strona została zaprojektowana i zbudowana w całości przez <strong>Claude (model Fable&nbsp;5, Anthropic)</strong> w Claude Code. Kierunek artystyczny — „Katalog światła” — wywodzi się z realiów firmy: ARKADY posiada jedną z największych w Europie kolekcji ponadstuletnich katalogów detalu sztukatorskiego, więc strona jest złożona jak żywa tablica z takiego katalogu (numeracja „Tab. I–VII”, ramki grawerskie, adnotacje monospace), a separatorami sekcji są rysowane na scrollu przekroje profili ciągnionych.</p>
+      <ul style="list-style: disc; padding-left: 1.4rem;">
+        <li><strong>Stack:</strong> czysty, statyczny HTML5 + CSS + vanilla JS (bez frameworków). Cała treść jest server-side w plikach HTML — pełna indeksowalność bez wykonywania JavaScriptu.</li>
+        <li><strong>Serwer:</strong> minimalny serwer Node.js (<code>server.js</code>) z gzip, poprawnymi nagłówkami cache/MIME, czystą trasą <code>/guide</code> i prawdziwą obsługą 404 (status 404 + <code>404.html</code>).</li>
+        <li><strong>Animacje jako progressive enhancement:</strong> JS dodaje klasę <code>js</code> na <code>&lt;html&gt;</code>; dopiero wtedy CSS ukrywa elementy do scroll-revealu. Bez JS (i dla Googlebota) wszystko jest widoczne od razu. Całość respektuje <code>prefers-reduced-motion</code>.</li>
+      </ul>
+
+      <h2>2. Design system</h2>
+      <table>
+        <tr><th>Warstwa</th><th>Decyzja</th></tr>
+        <tr><td>Paleta</td><td>gips <code>#EFEAE2</code>, cień reliefu <code>#CFC5B4</code>, oxblood <code>#241016</code> (kolor odziedziczony z historycznej strony firmy z 2018 r.), złoto płatkowe <code>#A9834B/#D6B77E</code>, atrament <code>#241D17</code></td></tr>
+        <tr><td>Typografia</td><td>Marcellus (nagłówki — litery o inskrypcyjnym, „kutym” charakterze), Spectral (tekst), IBM Plex Mono (adnotacje warsztatowe: numery tablic, etykiety). Fonty self-hosted WOFF2 z subsetami latin + latin-ext (polskie znaki), <code>font-display: swap</code>.</td></tr>
+        <tr><td>Sygnatura</td><td>Hero: gipsowa rozeta w świetle bocznym — wygenerowana, potem animowana (wędrujące światło); przekroje profili gzymsów jako separatory sekcji; pion sztukatorski jako wskaźnik scrolla; szkicowa mapa SVG zamiast ciężkiego iframe.</td></tr>
+      </table>
+
+      <h2>3. Assety generatywne</h2>
+      <h3>Obrazy — GPT Image 2 (Higgsfield)</h3>
+      <p>13 fotorealistycznych obrazów wygenerowano modelem <strong>GPT Image 2</strong> przez Higgsfield CLI w rozdzielczości 2K. Spójność serii zapewnia wspólny sufiks stylistyczny w promptach: <em>„photorealistic fine-art architectural photography, warm chalk-white gypsum, raking light, subtle film grain, no people, no text”</em>. Nazwy plików są opisowe i polskie (SEO), np. <code>gzymsy-sufitowe-fasety-ciagnione-lodz-800.avif</code>.</p>
+      <h3>Animacja — Seedance 2.0 (Higgsfield)</h3>
+      <p>Obraz hero został ożywiony modelem <strong>Seedance 2.0</strong> (image-to-video, 8&nbsp;s, 1080p): statyczna kamera, smuga słońca wędrująca po reliefie, drobiny kurzu. Wideo skompresowano przez ffmpeg (H.264, CRF 28, 1600&nbsp;px, bez audio) z 5,3&nbsp;MB do ~0,55&nbsp;MB i doładowywane jest wyłącznie: po pełnym załadowaniu strony, na ekranach ≥ 820&nbsp;px, gdy użytkownik nie ma <code>prefers-reduced-motion</code> ani <code>Save-Data</code>. LCP to zawsze statyczny obraz AVIF.</p>
+      <h3>Pipeline optymalizacji</h3>
+      <pre><code>node tools/build-images.mjs   # sharp: AVIF (q52) + WebP (q74) + JPG (q78)
+                              # w 3–4 szerokościach na obraz + og-image
+node tools/build-favicons.mjs # favicon.svg -> PNG 180/192/32 + favicon.ico</code></pre>
+
+      <h2>4. Warstwa SEO</h2>
+      <ul style="list-style: disc; padding-left: 1.4rem;">
+        <li>Jedno <code>&lt;h1&gt;</code>: „Sztukateria Łódź — gips, który rzeźbi światło”; hierarchia H2/H3 odwzorowuje usługi (gzymsy sufitowe, rozety sufitowe, listwy ozdobne, renowacja sztukaterii…).</li>
+        <li><code>&lt;title&gt;</code> 54 znaki, meta description ~150 znaków, canonical, OG + Twitter Card z dedykowanym obrazem 1200×630, <code>lang="pl"</code>, favicon set.</li>
+        <li>Semantyczne landmarki: <code>header / nav / main / section / footer</code>; nawigacja kotwiczna do sekcji; opisowe polskie <code>alt</code> na każdym obrazie.</li>
+        <li><strong>JSON-LD</strong> (@graph): <code>WebSite</code>, <code>WebPage</code>, <code>HomeAndConstructionBusiness</code> (NAP: ul. Tuwima 13, 90-010 Łódź, tel. +48 605 068 288, geo 51.7668/19.4611, godziny otwarcia, obszar działania, sameAs) z <code>hasOfferCatalog</code> (7 usług jako <code>Service</code>) oraz <code>FAQPage</code> (8 pytań zgodnych 1:1 z widoczną sekcją FAQ). <code>BreadcrumbList</code> pominięto świadomie — strona jest jednopoziomowa, nie ma ścieżki okruszków.</li>
+        <li>Local SEO: treść osadzona w realiach Łodzi (Piotrkowska 243, kamienice, pałace fabrykanckie), sekcja mapy z NAP, spójny NAP w stopce.</li>
+        <li>Pliki techniczne: <code>robots.txt</code> (z sitemapą, <code>/guide</code> wyłączony z indeksacji), <code>sitemap.xml</code> z rozszerzeniem image, strona 404 zwracająca prawdziwy status 404.</li>
+        <li><strong>Uwaga wdrożeniowa:</strong> canonical i adresy w sitemapie wskazują na <code>https://sztukateria.arkady.co/</code>. Przy publikacji pod inną domeną należy podmienić domenę w <code>index.html</code> (canonical, OG, JSON-LD), <code>sitemap.xml</code> i <code>robots.txt</code>. Godziny otwarcia (pn.–pt. 8–16) przyjęto jako typowe dla pracowni — zweryfikuj przed publikacją.</li>
+      </ul>
+
+      <h2>5. Wydajność (Core Web Vitals)</h2>
+      <ul style="list-style: disc; padding-left: 1.4rem;">
+        <li>LCP: hero jako <code>&lt;picture&gt;</code> AVIF/WebP/JPG z <code>srcset/sizes</code>, <code>fetchpriority="high"</code> i <code>&lt;link rel="preload"&gt;</code> z <code>imagesrcset</code>.</li>
+        <li>CLS ≈ 0: jawne <code>width/height</code> na każdym medium.</li>
+        <li>Obrazy poniżej foldu: <code>loading="lazy"</code> + <code>decoding="async"</code>.</li>
+        <li>JS: ~3 kB, <code>defer</code>, zero bibliotek; CSS: jeden plik, gzip po stronie serwera; fonty preloadowane (Marcellus).</li>
+        <li>Wideo hero nie blokuje niczego — dołącza po <code>window.load</code> i tylko na desktopie.</li>
+      </ul>
+
+      <h2>6. Jak uruchomić lokalnie</h2>
+      <pre><code># wymagany Node.js 18+
+cd arkady-sztukateria-lodz
+node server.js
+# → http://localhost:4321        (strona)
+# → http://localhost:4321/guide  (ten przewodnik)</code></pre>
+      <p>Serwer nie ma żadnych zależności produkcyjnych (czysty Node). Zależności deweloperskie (<code>sharp</code>, <code>ffmpeg-static</code>) potrzebne są wyłącznie do regeneracji assetów: <code>npm install</code>, potem skrypty z katalogu <code>tools/</code>.</p>
+
+      <h2>7. Struktura projektu</h2>
+      <pre><code>arkady-sztukateria-lodz/
+├── server.js            # serwer statyczny (gzip, 404, /guide)
+├── package.json
+├── tools/               # pipeline assetów (sharp, favicony)
+├── raw-assets/          # oryginały z generatora (PNG/MP4)
+└── site/                # katalog publiczny
+    ├── index.html       # landing page (cała treść + JSON-LD)
+    ├── 404.html
+    ├── robots.txt
+    ├── sitemap.xml
+    ├── favicon.ico
+    ├── guide/index.html # ta strona
+    └── assets/
+        ├── css/main.css # design system + @font-face
+        ├── js/main.js   # progressive enhancement (~3 kB)
+        ├── img/         # AVIF/WebP/JPG w wielu szerokościach
+        ├── video/       # hero 0,55 MB MP4
+        └── fonts/       # WOFF2 latin + latin-ext</code></pre>
+    </div>
+  </main>
+</body>
+</html>
