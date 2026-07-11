@@ -22,6 +22,7 @@ const rewrite = (rel) => {
   let s = readFileSync(f, 'utf8');
   s = s.replaceAll('"/assets/', `"${prefix}/assets/`)
        .replaceAll("'/assets/", `'${prefix}/assets/`)
+       .replaceAll(', /assets/', `, ${prefix}/assets/`)   // srcset/imagesrcset entries
        .replaceAll('url(/assets/', `url(${prefix}/assets/`)
        .replaceAll('href="/favicon.ico"', `href="${prefix}/favicon.ico"`)
        .replaceAll('href="/guide"', `href="${prefix}/guide/"`)
